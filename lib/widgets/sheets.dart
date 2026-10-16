@@ -64,7 +64,7 @@ Future<GateState?> showGateSheet(
                       height: 42,
                       decoration: BoxDecoration(
                         color: AppColors.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(13),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Icon(
                         Icons.badge_outlined,
@@ -80,13 +80,13 @@ Future<GateState?> showGateSheet(
                             current == null
                                 ? 'Siap bertugas?'
                                 : 'Ubah petugas hari ini',
-                            style: manrope(18, FontWeight.w700),
+                            style: manrope(20, FontWeight.w700),
                           ),
                           const SizedBox(height: 2),
                           Text(
                             'Nama dan titik tersimpan sampai besok.',
                             style: inter(
-                              13,
+                              14,
                               FontWeight.w400,
                               color: AppColors.muted,
                             ),
@@ -97,7 +97,7 @@ Future<GateState?> showGateSheet(
                   ],
                 ),
                 const SizedBox(height: 18),
-                Text('Nama petugas OSIS', style: inter(13, FontWeight.w600)),
+                Text('Nama petugas OSIS', style: inter(14, FontWeight.w600)),
                 const SizedBox(height: 6),
                 TextField(
                   controller: nameCtrl,
@@ -108,7 +108,7 @@ Future<GateState?> showGateSheet(
                   ),
                 ),
                 const SizedBox(height: 14),
-                Text('Titik gerbang', style: inter(13, FontWeight.w600)),
+                Text('Titik gerbang', style: inter(14, FontWeight.w600)),
                 const SizedBox(height: 6),
                 DropdownButtonFormField<String>(
                   initialValue: point,
@@ -184,11 +184,11 @@ Future<SessionPick?> showSessionPicker(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Pilih sesi', style: manrope(18, FontWeight.w700)),
+            Text('Pilih sesi', style: manrope(20, FontWeight.w700)),
             const SizedBox(height: 3),
             Text(
               'Scan ini masuk ke sesi yang dipilih.',
-              style: inter(13, FontWeight.w400, color: AppColors.muted),
+              style: inter(14, FontWeight.w400, color: AppColors.muted),
             ),
             const SizedBox(height: 8),
             for (final s in sessions)
@@ -207,10 +207,10 @@ Future<SessionPick?> showSessionPicker(
                     size: 22,
                   ),
                 ),
-                title: Text(s.name, style: inter(15, FontWeight.w600)),
+                title: Text(s.name, style: inter(16, FontWeight.w600)),
                 subtitle: Text(
                   s.host,
-                  style: inter(12.5, FontWeight.w400, color: AppColors.muted),
+                  style: inter(14, FontWeight.w400, color: AppColors.muted),
                 ),
                 trailing: s.id == activeId
                     ? const Icon(
@@ -233,11 +233,11 @@ Future<SessionPick?> showSessionPicker(
               ),
               title: Text(
                 'Tambah sesi baru',
-                style: inter(15, FontWeight.w600),
+                style: inter(16, FontWeight.w600),
               ),
               subtitle: Text(
                 'Scan QR sesi dari panel admin',
-                style: inter(12.5, FontWeight.w400, color: AppColors.muted),
+                style: inter(14, FontWeight.w400, color: AppColors.muted),
               ),
               onTap: () => Navigator.of(ctx).pop(const SessionPick.add()),
             ),
@@ -279,11 +279,11 @@ Future<String?> showManualNisnSheet(BuildContext context) async {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Input NISN manual', style: manrope(18, FontWeight.w700)),
+                Text('Input NISN manual', style: manrope(20, FontWeight.w700)),
                 const SizedBox(height: 3),
                 Text(
                   'Ketik angka pada kartu siswa.',
-                  style: inter(13, FontWeight.w400, color: AppColors.muted),
+                  style: inter(14, FontWeight.w400, color: AppColors.muted),
                 ),
                 const SizedBox(height: 14),
                 TextField(

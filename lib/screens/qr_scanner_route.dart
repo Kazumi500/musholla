@@ -56,7 +56,7 @@ class _QrScanRouteState extends State<QrScanRoute> {
                 child: Text(
                   'Kamera tidak bisa dibuka. Izinkan kamera untuk aplikasi ini di pengaturan Android, lalu buka lagi.',
                   textAlign: TextAlign.center,
-                  style: inter(14.5, FontWeight.w400, color: Colors.white),
+                  style: inter(16, FontWeight.w400, color: Colors.white),
                 ),
               ),
             ),
@@ -70,7 +70,7 @@ class _QrScanRouteState extends State<QrScanRoute> {
                     padding: const EdgeInsets.all(8),
                     child: IconButton(
                       style: IconButton.styleFrom(
-                        backgroundColor: Colors.black.withValues(alpha: 0.45),
+                        backgroundColor: Colors.black.withValues(alpha: 0.55),
                       ),
                       onPressed: () => Navigator.of(context).pop(),
                       icon: const Icon(
@@ -87,7 +87,7 @@ class _QrScanRouteState extends State<QrScanRoute> {
                     height: 240,
                     decoration: BoxDecoration(
                       border: Border.all(color: AppColors.gold, width: 2.5),
-                      borderRadius: BorderRadius.circular(26),
+                      borderRadius: BorderRadius.circular(24),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.35),
@@ -106,12 +106,12 @@ class _QrScanRouteState extends State<QrScanRoute> {
                   ),
                   decoration: BoxDecoration(
                     color: const Color(0x99000000),
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(24),
                   ),
                   child: Text(
                     'Pindai QR sesi dari panel admin',
                     textAlign: TextAlign.center,
-                    style: inter(15, FontWeight.w600, color: Colors.white),
+                    style: inter(16, FontWeight.w600, color: Colors.white),
                   ),
                 ),
                 const Spacer(),

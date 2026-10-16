@@ -293,7 +293,7 @@ class _ScanScreenState extends State<ScanScreen> {
                           child: Text(
                             'Sesi: ${widget.session.name}',
                             style: inter(
-                              12.5,
+                              14,
                               FontWeight.w600,
                               color: Colors.white,
                             ),
@@ -323,7 +323,7 @@ class _ScanScreenState extends State<ScanScreen> {
                   height: 250,
                   decoration: BoxDecoration(
                     border: Border.all(color: AppColors.gold, width: 2.5),
-                    borderRadius: BorderRadius.circular(26),
+                    borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withValues(alpha: 0.35),
@@ -346,7 +346,7 @@ class _ScanScreenState extends State<ScanScreen> {
                   ),
                   decoration: BoxDecoration(
                     color: _scrim,
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(24),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -354,13 +354,13 @@ class _ScanScreenState extends State<ScanScreen> {
                       Text(
                         'Arahkan kamera ke kartu siswa.',
                         textAlign: TextAlign.center,
-                        style: inter(15, FontWeight.w600, color: Colors.white),
+                        style: inter(16, FontWeight.w600, color: Colors.white),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         'Tidak perlu terlalu dekat.',
                         textAlign: TextAlign.center,
-                        style: inter(13, FontWeight.w400, color: Colors.white),
+                        style: inter(14, FontWeight.w400, color: Colors.white),
                       ),
                     ],
                   ),
@@ -444,7 +444,7 @@ class _ScanScreenState extends State<ScanScreen> {
     bool active = false,
   }) {
     return Material(
-      color: active ? AppColors.gold : Colors.black.withValues(alpha: 0.45),
+      color: active ? AppColors.gold : Colors.black.withValues(alpha: 0.55),
       shape: const CircleBorder(),
       child: InkWell(
         customBorder: const CircleBorder(),
@@ -489,7 +489,7 @@ class _ScanScreenState extends State<ScanScreen> {
                   const SizedBox(width: 7),
                   Text(
                     'NISN',
-                    style: inter(13, FontWeight.w600, color: Colors.white),
+                    style: inter(14, FontWeight.w600, color: Colors.white),
                   ),
                 ],
               ),
@@ -552,7 +552,7 @@ class _ScanScreenState extends State<ScanScreen> {
                 reason,
                 textAlign: TextAlign.center,
                 style: inter(
-                  14.5,
+                  16,
                   FontWeight.w400,
                   color: Colors.white,
                   height: 1.5,
@@ -567,7 +567,7 @@ class _ScanScreenState extends State<ScanScreen> {
                       foregroundColor: Colors.white,
                       side: const BorderSide(color: Colors.white54),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(16),
                       ),
                     ),
                     onPressed: () async {
@@ -581,10 +581,11 @@ class _ScanScreenState extends State<ScanScreen> {
                   const SizedBox(width: 10),
                   FilledButton(
                     style: FilledButton.styleFrom(
+                      minimumSize: const Size(0, 52),
                       backgroundColor: AppColors.gold,
                       foregroundColor: AppColors.primaryDark,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(16),
                       ),
                     ),
                     onPressed: _manual,

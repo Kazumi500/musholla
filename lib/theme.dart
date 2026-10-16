@@ -6,13 +6,17 @@ abstract class AppColors {
   static const primaryDark = Color(0xFF0A382B);
   static const secondary = Color(0xFF1E7A5A);
   static const gold = Color(0xFFC6A15B);
-  static const goldInk = Color(0xFF8A6A2F);
+  static const goldInk = Color(0xFF755720);
   static const surface = Color(0xFFFAF7F0);
   static const card = Color(0xFFFFFFFF);
   static const ink = Color(0xFF222B26);
-  static const muted = Color(0xFF5C6A62);
-  static const outline = Color(0xFFE6E2D6);
-  static const outlineStrong = Color(0xFFC7CFCA);
+  static const muted = Color(0xFF4A574F);
+  static const outline = Color(0xFFDCD6C5);
+  static const outlineStrong = Color(0xFFB3BFB7);
+
+  // Teks dan aksen di atas kepala hijau (rasio kontras di DESIGN.md).
+  static const onPrimarySoft = Color(0xFFCFE0D8);
+  static const goldSoft = Color(0xFFE0C288);
 
   // Warna status operasional (tabel di DESIGN.md).
   static const hadirBg = Color(0xFFE8F5EF);
@@ -94,18 +98,18 @@ ThemeData buildAppTheme() {
   );
 
   final text = base.textTheme.copyWith(
-    displaySmall: manrope(32, FontWeight.w800, height: 1.12),
-    headlineMedium: manrope(27, FontWeight.w800, height: 1.16),
-    headlineSmall: manrope(23, FontWeight.w700, height: 1.2),
+    displaySmall: manrope(40, FontWeight.w800, height: 1.12),
+    headlineMedium: manrope(26, FontWeight.w700, height: 1.16),
+    headlineSmall: manrope(20, FontWeight.w700, height: 1.2),
     titleLarge: manrope(20, FontWeight.w700),
-    titleMedium: manrope(17, FontWeight.w700),
-    titleSmall: manrope(15, FontWeight.w600),
+    titleMedium: manrope(16, FontWeight.w700),
+    titleSmall: manrope(14, FontWeight.w600),
     bodyLarge: inter(16, FontWeight.w400, height: 1.45),
-    bodyMedium: inter(14.5, FontWeight.w400, height: 1.45),
-    bodySmall: inter(13, FontWeight.w400, height: 1.4),
-    labelLarge: inter(15, FontWeight.w600),
-    labelMedium: inter(13, FontWeight.w600),
-    labelSmall: inter(11.5, FontWeight.w600, spacing: 0.2),
+    bodyMedium: inter(14, FontWeight.w400, height: 1.45),
+    bodySmall: inter(12, FontWeight.w400, height: 1.4),
+    labelLarge: inter(16, FontWeight.w600),
+    labelMedium: inter(14, FontWeight.w600),
+    labelSmall: inter(12, FontWeight.w600, spacing: 0.2),
   );
 
   return base.copyWith(
@@ -125,29 +129,31 @@ ThemeData buildAppTheme() {
         textStyle: inter(16, FontWeight.w600),
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
+        disabledBackgroundColor: const Color(0xFFDCE7E1),
+        disabledForegroundColor: const Color(0xFF4E5C55),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: AppColors.primary,
-        textStyle: inter(15, FontWeight.w600),
+        textStyle: inter(16, FontWeight.w600),
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: Colors.white,
-      hintStyle: inter(14.5, FontWeight.w400, color: AppColors.muted),
+      hintStyle: inter(16, FontWeight.w400, color: AppColors.muted),
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(16),
         borderSide: const BorderSide(color: AppColors.outlineStrong),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(16),
         borderSide: const BorderSide(color: AppColors.outlineStrong),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(16),
         borderSide: const BorderSide(color: AppColors.primary, width: 1.6),
       ),
     ),
@@ -170,16 +176,16 @@ ThemeData buildAppTheme() {
     dialogTheme: DialogThemeData(
       backgroundColor: AppColors.surface,
       surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-      titleTextStyle: manrope(19, FontWeight.w700, color: AppColors.ink),
-      contentTextStyle: inter(14.5, FontWeight.w400, color: AppColors.ink),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      titleTextStyle: manrope(20, FontWeight.w700, color: AppColors.ink),
+      contentTextStyle: inter(16, FontWeight.w400, color: AppColors.ink),
     ),
     cardTheme: CardThemeData(
       color: Colors.white,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         side: const BorderSide(color: AppColors.outline),
       ),
     ),

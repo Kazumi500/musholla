@@ -7,7 +7,7 @@ import '../services/store.dart';
 import '../services/sync.dart';
 import '../theme.dart';
 import '../widgets/error_panel.dart';
-import '../widgets/result_card.dart';
+import '../widgets/scan_tile.dart';
 
 /// Isi tab "Riwayat": pindaian hari ini dari HP ini, plus tombol sinkron.
 class HistoryTab extends StatefulWidget {
@@ -82,15 +82,6 @@ class _HistoryTabState extends State<HistoryTab> {
     await _reload();
   }
 
-  String _subtitle(ScanRow r) {
-    final parts = <String>[
-      if (r.studentGrade != null && r.studentGrade!.isNotEmpty) r.studentGrade!,
-      _sessionNames[r.sessionId] ?? '',
-      if (r.pending) 'menunggu jaringan',
-    ]..removeWhere((s) => s.isEmpty);
-    return parts.isEmpty ? 'NISN ${r.nisn}' : parts.join(' · ');
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -107,13 +98,13 @@ class _HistoryTabState extends State<HistoryTab> {
                     children: [
                       Text(
                         'Riwayat hari ini',
-                        style: manrope(23, FontWeight.w700),
+                        style: manrope(26, FontWeight.w700),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         'Dari HP ini saja, bukan seluruh sekolah.',
                         style: inter(
-                          13,
+                          14,
                           FontWeight.w400,
                           color: AppColors.muted,
                         ),
@@ -139,7 +130,7 @@ class _HistoryTabState extends State<HistoryTab> {
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: AppColors.offBg,
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(24),
                     border: Border.all(
                       color: AppColors.offLine.withValues(alpha: 0.5),
                     ),
@@ -156,7 +147,7 @@ class _HistoryTabState extends State<HistoryTab> {
                         child: Text(
                           '$pending pindaian menunggu jaringan. Simpanan aman, terkirim otomatis.',
                           style: inter(
-                            13,
+                            14,
                             FontWeight.w500,
                             color: AppColors.offInk,
                           ),
@@ -198,7 +189,7 @@ class _HistoryTabState extends State<HistoryTab> {
                                     Text(
                                       'Belum ada pindaian hari ini.',
                                       style: inter(
-                                        15,
+                                        16,
                                         FontWeight.w600,
                                         color: AppColors.muted,
                                       ),
@@ -208,7 +199,7 @@ class _HistoryTabState extends State<HistoryTab> {
                                       'Hasil scan muncul di sini, tetap tersimpan walau jaringan lepas.',
                                       textAlign: TextAlign.center,
                                       style: inter(
-                                        13,
+                                        14,
                                         FontWeight.w400,
                                         color: AppColors.muted,
                                       ),
@@ -221,77 +212,14 @@ class _HistoryTabState extends State<HistoryTab> {
                         : ListView.builder(
                             padding: const EdgeInsets.fromLTRB(20, 4, 20, 90),
                             itemCount: _rows.length,
-                            itemBuilder: (context, i) => _rowTile(_rows[i]),
+                            itemBuilder: (context, i) => ScanTile(
+                              row: _rows[i],
+                              sessionName: _sessionNames[_rows[i].sessionId],
+                            ),
                           ),
                   ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _rowTile(ScanRow r) {
-    final st = styleFor(r.result);
-    final at = DateTime.fromMillisecondsSinceEpoch(r.at);
-    final title = (r.studentName != null && r.studentName!.isNotEmpty)
-        ? r.studentName!
-        : (r.message.isNotEmpty ? r.message : 'NISN ${r.nisn}');
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.outline),
-        ),
-        child: Row(
-          children: [
-            Text(
-              '${two(at.hour)}:${two(at.minute)}',
-              style: inter(
-                12.5,
-                FontWeight.w600,
-                color: AppColors.muted,
-              ).copyWith(fontFeatures: tabular),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: inter(14.5, FontWeight.w600),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    _subtitle(r),
-                    style: inter(12, FontWeight.w400, color: AppColors.muted),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-              decoration: BoxDecoration(
-                color: st.bg,
-                borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: st.line, width: 1),
-              ),
-              child: Text(
-                st.short,
-                style: inter(10.5, FontWeight.w700, color: st.ink),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

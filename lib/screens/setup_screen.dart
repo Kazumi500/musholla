@@ -39,7 +39,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 height: 84,
                 decoration: BoxDecoration(
                   color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(26),
+                  borderRadius: BorderRadius.circular(24),
                   border: Border.all(color: AppColors.gold, width: 2),
                 ),
                 child: const Icon(
@@ -49,7 +49,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              Text('Absensi Sholat', style: manrope(30, FontWeight.w800)),
+              Text('Absensi Sholat', style: manrope(26, FontWeight.w700)),
               const SizedBox(height: 10),
               Text(
                 'Pemindai kartu siswa untuk petugas OSIS di gerbang musholla.',
@@ -83,10 +83,7 @@ class _SetupScreenState extends State<SetupScreen> {
                     ? const SizedBox(
                         width: 18,
                         height: 18,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2.2,
-                          color: Colors.white,
-                        ),
+                        child: CircularProgressIndicator(strokeWidth: 2.2),
                       )
                     : const Icon(Icons.qr_code_scanner_rounded),
                 label: Text(_busy ? 'Memproses...' : 'Scan QR dari admin'),
@@ -95,7 +92,7 @@ class _SetupScreenState extends State<SetupScreen> {
               Center(
                 child: Text(
                   'Server sekolah tidak diubah. Aplikasi ini hanya klien pemindai.',
-                  style: inter(12.5, FontWeight.w400, color: AppColors.muted),
+                  style: inter(12, FontWeight.w400, color: AppColors.muted),
                 ),
               ),
             ],
@@ -124,12 +121,12 @@ class _Step extends StatelessWidget {
             height: 32,
             decoration: BoxDecoration(
               color: AppColors.gold.withValues(alpha: 0.18),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: Center(
               child: Text(
                 '$number',
-                style: manrope(20, FontWeight.w800, color: AppColors.goldInk),
+                style: manrope(20, FontWeight.w700, color: AppColors.goldInk),
               ),
             ),
           ),
@@ -138,12 +135,12 @@ class _Step extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: inter(15, FontWeight.w600)),
+                Text(title, style: inter(16, FontWeight.w600)),
                 const SizedBox(height: 2),
                 Text(
                   body,
                   style: inter(
-                    13,
+                    14,
                     FontWeight.w400,
                     color: AppColors.muted,
                     height: 1.4,

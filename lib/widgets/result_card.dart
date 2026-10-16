@@ -24,8 +24,8 @@ class ResultStyle {
 
 const _styles = <String, ResultStyle>{
   'hadir': ResultStyle(
-    'HADIR BERJAMAAH',
-    'HADIR',
+    'Hadir berjamaah',
+    'Hadir',
     'Tercatat di server',
     Icons.check_rounded,
     AppColors.hadirBg,
@@ -33,8 +33,8 @@ const _styles = <String, ResultStyle>{
     AppColors.hadirInk,
   ),
   'duplikat': ResultStyle(
-    'SUDAH TERCATAT',
-    'SUDAH',
+    'Sudah tercatat',
+    'Sudah',
     'Tidak dihitung dobel',
     Icons.done_all_rounded,
     AppColors.dupBg,
@@ -42,8 +42,8 @@ const _styles = <String, ResultStyle>{
     AppColors.dupInk,
   ),
   'non_muslim': ResultStyle(
-    'NON-MUSLIM (BEBAS)',
-    'NON-MUSLIM',
+    'Non-Muslim (bebas)',
+    'Non-Muslim',
     'Dispensasi sholat',
     Icons.menu_book_rounded,
     AppColors.nmBg,
@@ -51,8 +51,8 @@ const _styles = <String, ResultStyle>{
     AppColors.nmInk,
   ),
   'belum_terdaftar': ResultStyle(
-    'TIDAK TERDAFTAR',
-    'TIDAK ADA',
+    'Tidak terdaftar',
+    'Tidak ada',
     'NISN tidak dikenal',
     Icons.person_off_rounded,
     AppColors.errBg,
@@ -60,8 +60,8 @@ const _styles = <String, ResultStyle>{
     AppColors.errInk,
   ),
   'invalid': ResultStyle(
-    'NISN TIDAK VALID',
-    'INVALID',
+    'NISN tidak valid',
+    'Tidak valid',
     'Bukan 6 sampai 20 digit angka',
     Icons.error_outline_rounded,
     AppColors.errBg,
@@ -69,8 +69,8 @@ const _styles = <String, ResultStyle>{
     AppColors.errInk,
   ),
   'sesi_ditutup': ResultStyle(
-    'SESI DITUTUP',
-    'DITUTUP',
+    'Sesi ditutup',
+    'Ditutup',
     'Sudah ditutup admin',
     Icons.lock_rounded,
     AppColors.closedBg,
@@ -78,8 +78,8 @@ const _styles = <String, ResultStyle>{
     AppColors.closedInk,
   ),
   'token_error': ResultStyle(
-    'SESI TIDAK AKTIF',
-    'NONAKTIF',
+    'Sesi tidak aktif',
+    'Nonaktif',
     'Minta QR baru dari admin',
     Icons.link_off_rounded,
     AppColors.errBg,
@@ -87,8 +87,8 @@ const _styles = <String, ResultStyle>{
     AppColors.errInk,
   ),
   'offline': ResultStyle(
-    'DISIMPAN DI ANTREAN',
-    'ANTREAN',
+    'Disimpan di antrean',
+    'Antrean',
     'Terkirim otomatis saat jaringan ada',
     Icons.cloud_upload_outlined,
     AppColors.offBg,
@@ -96,8 +96,8 @@ const _styles = <String, ResultStyle>{
     AppColors.offInk,
   ),
   'gagal': ResultStyle(
-    'GAGAL TERKIRIM',
-    'GAGAL',
+    'Gagal terkirim',
+    'Gagal',
     'Coba kirim ulang dari Riwayat',
     Icons.cloud_off_rounded,
     AppColors.errBg,
@@ -141,11 +141,11 @@ class ResultCard extends StatelessWidget {
         : (nisn.isNotEmpty ? 'NISN $nisn' : '');
 
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: st.bg,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: st.line, width: 1.4),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: st.line, width: 1.5),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.14),
@@ -158,10 +158,10 @@ class ResultCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 38,
-            height: 38,
-            decoration: BoxDecoration(color: st.line, shape: BoxShape.circle),
-            child: Icon(st.icon, color: Colors.white, size: 21),
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(color: st.ink, shape: BoxShape.circle),
+            child: Icon(st.icon, color: Colors.white, size: 20),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -170,26 +170,26 @@ class ResultCard extends StatelessWidget {
               children: [
                 Text(
                   st.title,
-                  style: manrope(
-                    12.5,
-                    FontWeight.w700,
+                  style: inter(
+                    12,
+                    FontWeight.w600,
                     color: st.ink,
-                    spacing: 0.4,
+                    spacing: 0.2,
                   ),
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: 4),
                 Text(
                   middle,
-                  style: manrope(18.5, FontWeight.w800, color: st.ink),
+                  style: manrope(20, FontWeight.w800, color: st.ink),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 if (sub.isNotEmpty) ...[
-                  const SizedBox(height: 3),
+                  const SizedBox(height: 2),
                   Text(
                     sub,
                     style: inter(
-                      12,
+                      14,
                       FontWeight.w500,
                       color: st.ink,
                     ).copyWith(fontFeatures: tabular),
@@ -202,7 +202,7 @@ class ResultCard extends StatelessWidget {
           Text(
             clockText(at),
             style: inter(
-              11.5,
+              12,
               FontWeight.w600,
               color: st.ink,
             ).copyWith(fontFeatures: tabular),

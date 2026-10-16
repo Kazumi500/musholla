@@ -177,13 +177,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               children: [
                                 Text(
                                   name.isEmpty ? 'Belum diisi' : name,
-                                  style: manrope(19, FontWeight.w700),
+                                  style: manrope(20, FontWeight.w700),
                                 ),
                                 const SizedBox(height: 3),
                                 Text(
                                   '${point.value} · ${point.label}',
                                   style: inter(
-                                    13,
+                                    14,
                                     FontWeight.w500,
                                     color: AppColors.goldInk,
                                   ),
@@ -230,7 +230,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 children: [
                                   Text(
                                     s.name,
-                                    style: inter(15, FontWeight.w600),
+                                    style: inter(16, FontWeight.w600),
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
@@ -243,7 +243,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         '${_pendingPer[s.id]} antrean',
                                     ].join(' · '),
                                     style: inter(
-                                      12,
+                                      14,
                                       FontWeight.w400,
                                       color: AppColors.muted,
                                     ),
@@ -279,12 +279,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                         title: Text(
                           'Tambah sesi (scan QR)',
-                          style: inter(14.5, FontWeight.w600),
+                          style: inter(16, FontWeight.w600),
                         ),
                         subtitle: Text(
                           'Pakai QR dari panel admin',
                           style: inter(
-                            12,
+                            14,
                             FontWeight.w400,
                             color: AppColors.muted,
                           ),
@@ -315,12 +315,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                         title: Text(
                           'Cek koneksi server',
-                          style: inter(14.5, FontWeight.w600),
+                          style: inter(16, FontWeight.w600),
                         ),
                         subtitle: Text(
                           'Buka ulang halaman sesi di server',
                           style: inter(
-                            12,
+                            14,
                             FontWeight.w400,
                             color: AppColors.muted,
                           ),
@@ -342,12 +342,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                         title: Text(
                           'Suara beep',
-                          style: inter(14.5, FontWeight.w600),
+                          style: inter(16, FontWeight.w600),
                         ),
                         subtitle: Text(
                           'Nada beda untuk tiap hasil',
                           style: inter(
-                            12,
+                            14,
                             FontWeight.w400,
                             color: AppColors.muted,
                           ),
@@ -367,12 +367,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                         title: Text(
                           'Getaran',
-                          style: inter(14.5, FontWeight.w600),
+                          style: inter(16, FontWeight.w600),
                         ),
                         subtitle: Text(
                           'Hadir: tiga denyut, lainnya: satu denyut',
                           style: inter(
-                            12,
+                            14,
                             FontWeight.w400,
                             color: AppColors.muted,
                           ),
@@ -392,12 +392,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Absensi Sholat', style: inter(15, FontWeight.w600)),
+                      Text('Absensi Sholat', style: inter(16, FontWeight.w600)),
                       const SizedBox(height: 3),
                       Text(
                         'Versi 1.0.0 untuk petugas OSIS. Klien pemindai; server sekolah tidak diubah.',
                         style: inter(
-                          12.5,
+                          14,
                           FontWeight.w400,
                           color: AppColors.muted,
                           height: 1.5,
@@ -416,7 +416,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(24),
       border: Border.all(color: AppColors.outline),
     ),
     child: Column(
@@ -425,7 +425,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Text(
           title.toUpperCase(),
           style: inter(
-            11.5,
+            12,
             FontWeight.w600,
             color: AppColors.muted,
             spacing: 0.6,

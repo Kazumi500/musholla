@@ -25,9 +25,12 @@ Hijau tua berwibawa + aksen emas (pilihan pemilik).
 | --- | --- | --- |
 | Primary, hijau tua | `#0F4C3A` | identitas utama; tombol besar dan kepala layar; kontras aman dengan teks putih |
 | Secondary, hijau segar | `#1E7A5A` | pendukung, keadaan positif |
-| Aksen emas | `#C6A15B` (aksen besar), `#8A6A2F` (teks emas di latar terang) | aksen pilihan pemilik; dua tingkat supaya tetap aman dibaca |
+| Aksen emas | `#C6A15B` (aksen besar), `#755720` (teks emas di latar terang), `#E0C288` (teks di atas hijau kepala) | aksen pilihan pemilik; tiga tingkat supaya tetap aman dibaca |
 | Latar | `#FAF7F0` kertas hangat, kartu `#FFFFFF` | kehangatan datang dari latar dan tinta, bukan dari banyak warna |
-| Teks | `#222B26` utama, `#5C6A62` lemah | tinta hangat, bukan hitam pekat |
+| Teks | `#222B26` utama, `#4A574F` lemah | tinta hangat, bukan hitam pekat |
+| Kepala hijau | teks utama putih, teks pendukung `#CFE0D8`, aksen titik `#E0C288` | kepala layar pakai primary; tiap teks dihitung kontrasnya |
+
+Garis: `#DCD6C5` halus (pemisah), `#B3BFB7` tegas (bingkai, garis kolom isian).
 
 Status operasional (fungsional, terpisah dari identitas):
 
@@ -45,6 +48,9 @@ Status operasional (fungsional, terpisah dari identitas):
 - **Judul dan momen besar: Manrope.** Alasan: geometris-humanis, terasa hangat tapi tegas; cocok untuk nama siswa dan angka besar.
 - **Isi dan data: Inter dengan `tabular-nums`.** Alasan: paling terbaca di ukuran kecil; angka NISN dan waktu tidak goyang lebarnya.
 - **Ikon: Material Symbols (Rounded, weight sedang).** Alasan: menyatu dengan Android dan Flutter, familiar untuk anak OSIS, tanpa aset tambahan.
+- **Skala huruf: enam langkah saja.** 12 (keterangan, chip, label navbar, jam), 14 (isi kecil dan baris keterangan), 16 (isi, judul baris, tombol, kolom isian, judul lembar), 20 (judul bagian dan kepala), 26 (judul layar dan nama), 40 (angka besar). Tidak ada ukuran setengah piksel.
+- **Berat huruf.** w800 hanya untuk nama dan angka besar; judul w700; label, chip, dan tombol w600; isi w400 atau w500.
+- **Sudut: empat nilai saja.** 12 (kontrol kecil dan badge), 16 (tombol dan kolom isian), 24 (kartu, lembar, dialog, bingkai kamera), 999 (kapsul dan chip).
 
 ## Nada Bicara (contoh kanon)
 

@@ -25,7 +25,7 @@ class ErrorPanel extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: inter(14, FontWeight.w400, color: AppColors.ink),
+              style: inter(16, FontWeight.w400, color: AppColors.ink),
             ),
             const SizedBox(height: 14),
             FilledButton(onPressed: onRetry, child: const Text('Coba lagi')),
