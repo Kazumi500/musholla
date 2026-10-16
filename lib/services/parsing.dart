@@ -8,25 +8,37 @@ bool isNisn(String value) => _nisnRe.hasMatch(value.trim());
 
 /// QR dari panel admin berisi URL lengkap: http://host/s/{token}
 Uri? parseSessionQr(String raw) {
-  final m = RegExp(r'^(https?://[^\s/]+)/s/([A-Za-z0-9_-]+)/*$').firstMatch(raw.trim());
+  final m = RegExp(r'^(https?://[^\s/]+)/s/([A-Za-z0-9_-]+)/*$')
+      .firstMatch(raw.trim());
   if (m == null) return null;
   return Uri.parse('${m.group(1)}/s/${m.group(2)}');
 }
 
 String? extractCsrf(String html) {
-  final m = RegExp(r'''name="csrf-token"\s+content="([^"]+)"''').firstMatch(html) ??
+  final m =
+      RegExp(r'''name="csrf-token"\s+content="([^"]+)"''').firstMatch(html) ??
       RegExp(r'''content="([^"]+)"\s+name="csrf-token"''').firstMatch(html);
   return m?.group(1);
 }
 
-/// Judul halaman server: "Kamera Scan Dzuhur — Absensi Sholat".
+/// Judul halaman server: "Kamera Scan {nama}" + pemisah + "Absensi Sholat".
 String? extractSessionName(String html) {
-  final m = RegExp(r'<title>(.*?)</title>', caseSensitive: false, dotAll: true).firstMatch(html);
+  final m = RegExp(
+    r'<title>(.*?)</title>',
+    caseSensitive: false,
+    dotAll: true,
+  ).firstMatch(html);
   if (m == null) return null;
   var t = htmlDecode(m.group(1)!.trim());
   t = t.replaceFirst(RegExp(r'^Kamera Scan\s+', caseSensitive: false), '');
-  t = t.replaceFirst(RegExp(r'\s*[—–]\s*Absensi Sholat$', caseSensitive: false), '');
-  t = t.replaceFirst(RegExp(r'\s+-\s+Absensi Sholat$', caseSensitive: false), '');
+  t = t.replaceFirst(
+    RegExp(r'\s*[—–]\s*Absensi Sholat$', caseSensitive: false),
+    '',
+  );
+  t = t.replaceFirst(
+    RegExp(r'\s+-\s+Absensi Sholat$', caseSensitive: false),
+    '',
+  );
   t = t.trim();
   if (t.isEmpty || t.toLowerCase() == 'absensi sholat') return null;
   return t;

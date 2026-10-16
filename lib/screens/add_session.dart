@@ -36,7 +36,8 @@ Future<ScanSession?> addSessionByQr(BuildContext context) async {
       break;
     }
   }
-  final session = existing ??
+  final session =
+      existing ??
       ScanSession(
         id: id,
         baseUrl: base,
@@ -45,22 +46,28 @@ Future<ScanSession?> addSessionByQr(BuildContext context) async {
         lastUsedAt: DateTime.now().millisecondsSinceEpoch,
       );
 
-  unawaited(showDialog<void>(
-    context: context,
-    barrierDismissible: false,
-    builder: (_) => const PopScope(
-      canPop: false,
-      child: AlertDialog(
-        content: Row(
-          children: [
-            SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.4)),
-            SizedBox(width: 16),
-            Expanded(child: Text('Membaca sesi dari server...')),
-          ],
+  unawaited(
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const PopScope(
+        canPop: false,
+        child: AlertDialog(
+          content: Row(
+            children: [
+              SizedBox(
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(strokeWidth: 2.4),
+              ),
+              SizedBox(width: 16),
+              Expanded(child: Text('Membaca sesi dari server...')),
+            ],
+          ),
         ),
       ),
     ),
-  ));
+  );
 
   final res = await ScanApi.fetchPage(session);
   if (!context.mounted) return null;

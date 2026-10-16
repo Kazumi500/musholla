@@ -33,8 +33,10 @@ class Store {
     return out;
   }
 
-  static Future<void> saveSessions(List<ScanSession> list) =>
-      _p.setStringList(_kSessions, [for (final s in list) jsonEncode(s.toJson())]);
+  static Future<void> saveSessions(List<ScanSession> list) => _p.setStringList(
+    _kSessions,
+    [for (final s in list) jsonEncode(s.toJson())],
+  );
 
   static Future<void> upsertSession(ScanSession s) async {
     final list = sessions();

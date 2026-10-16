@@ -23,23 +23,30 @@ class ScanApi {
   static final http.Client _client = http.Client();
 
   static Map<String, String> _baseHeaders() => {
-        'Accept-Language': 'id',
-        'User-Agent': 'AbsensiSholat/1.0 (Android)',
-      };
+    'Accept-Language': 'id',
+    'User-Agent': 'AbsensiSholat/1.0 (Android)',
+  };
 
   /// Buka halaman scan di server: ambil kunci CSRF, cookie sesi, dan nama sesi.
   /// Inilah "izin masuk" yang wajib dilakukan sekali sebelum kiriman pertama.
   static Future<ApiOutcome> fetchPage(ScanSession s) async {
     try {
       final res = await _client
-          .get(Uri.parse(s.pageUrl), headers: {'Accept': 'text/html', ..._baseHeaders()})
+          .get(
+            Uri.parse(s.pageUrl),
+            headers: {'Accept': 'text/html', ..._baseHeaders()},
+          )
           .timeout(_timeout);
       if (res.statusCode == 404) return const ApiOutcome('notfound');
-      if (res.statusCode != 200) return ApiOutcome('server', note: 'HTTP ${res.statusCode}');
+      if (res.statusCode != 200) {
+        return ApiOutcome('server', note: 'HTTP ${res.statusCode}');
+      }
       final html = utf8.decode(res.bodyBytes);
       final csrf = extractCsrf(html);
       final cookies = parseSetCookieHeader(res.headers['set-cookie'] ?? '');
-      if (csrf == null || cookies.isEmpty) return const ApiOutcome('server', note: 'Halaman tidak dikenali');
+      if (csrf == null || cookies.isEmpty) {
+        return const ApiOutcome('server', note: 'Halaman tidak dikenali');
+      }
       s.cookies.addAll(cookies);
       s.csrf = csrf;
       final name = extractSessionName(html);
@@ -75,7 +82,9 @@ class ScanApi {
       }
       if (res.statusCode == 404) return const ApiOutcome('notfound');
       if (res.statusCode >= 200 && res.statusCode < 300) {
-        final body = res.bodyBytes.isEmpty ? <String, dynamic>{} : jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
+        final body = res.bodyBytes.isEmpty
+            ? <String, dynamic>{}
+            : jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
         return ApiOutcome('ok', json: body);
       }
       return ApiOutcome('server', note: 'HTTP ${res.statusCode}');
@@ -97,10 +106,16 @@ class ScanApi {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'X-CSRF-TOKEN': s.csrf ?? '',
-            'Cookie': s.cookies.entries.map((e) => '${e.key}=${e.value}').join('; '),
+            'Cookie': s.cookies.entries
+                .map((e) => '${e.key}=${e.value}')
+                .join('; '),
             ..._baseHeaders(),
           },
-          body: jsonEncode({'nisn': nisn, 'scanned_by': scannedBy, 'point': point}),
+          body: jsonEncode({
+            'nisn': nisn,
+            'scanned_by': scannedBy,
+            'point': point,
+          }),
         )
         .timeout(_timeout);
   }

@@ -8,6 +8,7 @@ import 'services/feedback.dart';
 import 'services/store.dart';
 import 'services/sync.dart';
 import 'theme.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

@@ -96,13 +96,22 @@ class AppDb {
 
   static Future<List<ScanRow>> today() async {
     final db = await _database;
-    final rows = await db.query('scans', where: 'at >= ?', whereArgs: [_todayStart], orderBy: 'at DESC, id DESC');
+    final rows = await db.query(
+      'scans',
+      where: 'at >= ?',
+      whereArgs: [_todayStart],
+      orderBy: 'at DESC, id DESC',
+    );
     return rows.map(ScanRow.fromMap).toList();
   }
 
   static Future<List<ScanRow>> pendingRows() async {
     final db = await _database;
-    final rows = await db.query('scans', where: 'pending = 1', orderBy: 'at ASC, id ASC');
+    final rows = await db.query(
+      'scans',
+      where: 'pending = 1',
+      orderBy: 'at ASC, id ASC',
+    );
     return rows.map(ScanRow.fromMap).toList();
   }
 
@@ -117,12 +126,24 @@ class AppDb {
 
   static Future<void> refreshSignals() async {
     final db = await _database;
-    final pending = (await db.rawQuery('SELECT COUNT(*) AS n FROM scans WHERE pending = 1')).first['n'] as int? ?? 0;
-    final today = (await db.rawQuery('SELECT COUNT(*) AS n FROM scans WHERE at >= ?', [_todayStart])).first['n'] as int? ?? 0;
-    final hadir = (await db.rawQuery(
-      "SELECT COUNT(*) AS n FROM scans WHERE at >= ? AND result = 'hadir'",
-      [_todayStart],
-    )).first['n'] as int? ?? 0;
+    final pending =
+        (await db.rawQuery('SELECT COUNT(*) AS n FROM scans WHERE pending = 1'))
+                .first['n']
+            as int? ??
+        0;
+    final today =
+        (await db.rawQuery('SELECT COUNT(*) AS n FROM scans WHERE at >= ?', [
+              _todayStart,
+            ])).first['n']
+            as int? ??
+        0;
+    final hadir =
+        (await db.rawQuery(
+              "SELECT COUNT(*) AS n FROM scans WHERE at >= ? AND result = 'hadir'",
+              [_todayStart],
+            )).first['n']
+            as int? ??
+        0;
     Signals.pending.value = pending;
     Signals.todayTotal.value = today;
     Signals.todayHadir.value = hadir;

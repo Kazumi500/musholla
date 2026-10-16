@@ -28,7 +28,10 @@ void main() {
     });
 
     test('menerima https, garis miring di akhir, dan spasi', () {
-      expect(parseSessionQr('  https://absensi.sekolah.id/s/Tok3n_X  '), isNotNull);
+      expect(
+        parseSessionQr('  https://absensi.sekolah.id/s/Tok3n_X  '),
+        isNotNull,
+      );
       expect(parseSessionQr('http://10.0.0.2:8000/s/abcd/'), isNotNull);
     });
 
@@ -67,7 +70,8 @@ void main() {
     });
 
     test('menerjemahkan entitas HTML', () {
-      const html = '<title>Kamera Scan Jum&#039;at &amp; Dzuhur — Absensi Sholat</title>';
+      const html =
+          '<title>Kamera Scan Jum&#039;at &amp; Dzuhur — Absensi Sholat</title>';
       expect(extractSessionName(html), "Jum'at & Dzuhur");
     });
 
@@ -80,7 +84,8 @@ void main() {
 
   group('parseSetCookieHeader', () {
     test('memisah dua cookie yang digabung koma, termasuk Expires ber-koma', () {
-      const raw = 'XSRF-TOKEN=abc%3D; expires=Sat, 17 Oct 2026 01:00:00 GMT; path=/; samesite=lax, '
+      const raw =
+          'XSRF-TOKEN=abc%3D; expires=Sat, 17 Oct 2026 01:00:00 GMT; path=/; samesite=lax, '
           'laravel_session=eyJpdiI6IkxhbA%3D%3D; expires=Sat, 17 Oct 2026 01:00:00 GMT; path=/; httponly';
       final map = parseSetCookieHeader(raw);
       expect(map['XSRF-TOKEN'], 'abc%3D');

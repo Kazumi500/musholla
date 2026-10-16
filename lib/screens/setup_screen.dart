@@ -42,24 +42,52 @@ class _SetupScreenState extends State<SetupScreen> {
                   borderRadius: BorderRadius.circular(26),
                   border: Border.all(color: AppColors.gold, width: 2),
                 ),
-                child: const Icon(Icons.qr_code_scanner_rounded, color: Colors.white, size: 42),
+                child: const Icon(
+                  Icons.qr_code_scanner_rounded,
+                  color: Colors.white,
+                  size: 42,
+                ),
               ),
               const SizedBox(height: 24),
               Text('Absensi Sholat', style: manrope(30, FontWeight.w800)),
               const SizedBox(height: 10),
               Text(
                 'Pemindai kartu siswa untuk petugas OSIS di gerbang musholla.',
-                style: inter(16, FontWeight.w400, color: AppColors.muted, height: 1.5),
+                style: inter(
+                  16,
+                  FontWeight.w400,
+                  color: AppColors.muted,
+                  height: 1.5,
+                ),
               ),
               const SizedBox(height: 26),
-              const _Step(1, 'Minta QR sesi ke admin', 'Admin membuka halaman QR sesi di panel, lalu pilih sesi yang sedang berjalan.'),
-              const _Step(2, 'Pindai QR-nya', 'Tekan tombol di bawah, lalu arahkan kamera ke QR tersebut.'),
-              const _Step(3, 'Mulai pindai kartu siswa', 'Nama sesi terbaca otomatis. Setelah ini tinggal scan seperti biasa.'),
+              const _Step(
+                1,
+                'Minta QR sesi ke admin',
+                'Admin membuka halaman QR sesi di panel, lalu pilih sesi yang sedang berjalan.',
+              ),
+              const _Step(
+                2,
+                'Pindai QR-nya',
+                'Tekan tombol di bawah, lalu arahkan kamera ke QR tersebut.',
+              ),
+              const _Step(
+                3,
+                'Mulai pindai kartu siswa',
+                'Nama sesi terbaca otomatis. Setelah ini tinggal scan seperti biasa.',
+              ),
               const SizedBox(height: 30),
               FilledButton.icon(
                 onPressed: _busy ? null : _start,
                 icon: _busy
-                    ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2.2, color: Colors.white))
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.2,
+                          color: Colors.white,
+                        ),
+                      )
                     : const Icon(Icons.qr_code_scanner_rounded),
                 label: Text(_busy ? 'Memproses...' : 'Scan QR dari admin'),
               ),
@@ -92,13 +120,18 @@ class _Step extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 28,
-            height: 28,
+            width: 32,
+            height: 32,
             decoration: BoxDecoration(
               color: AppColors.gold.withValues(alpha: 0.18),
-              borderRadius: BorderRadius.circular(9),
+              borderRadius: BorderRadius.circular(10),
             ),
-            child: Center(child: Text('$number', style: manrope(14, FontWeight.w800, color: AppColors.goldInk))),
+            child: Center(
+              child: Text(
+                '$number',
+                style: manrope(20, FontWeight.w800, color: AppColors.goldInk),
+              ),
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -107,7 +140,15 @@ class _Step extends StatelessWidget {
               children: [
                 Text(title, style: inter(15, FontWeight.w600)),
                 const SizedBox(height: 2),
-                Text(body, style: inter(13, FontWeight.w400, color: AppColors.muted, height: 1.4)),
+                Text(
+                  body,
+                  style: inter(
+                    13,
+                    FontWeight.w400,
+                    color: AppColors.muted,
+                    height: 1.4,
+                  ),
+                ),
               ],
             ),
           ),

@@ -31,7 +31,12 @@ class Sync {
           continue;
         }
         final s = sessions[i];
-        final res = await ScanApi.submit(s, nisn: item.nisn, scannedBy: item.scannedBy, point: item.point);
+        final res = await ScanApi.submit(
+          s,
+          nisn: item.nisn,
+          scannedBy: item.scannedBy,
+          point: item.point,
+        );
         if (res.kind == 'ok') {
           final j = res.json ?? const <String, dynamic>{};
           final student = j['student'] as Map<String, dynamic>?;

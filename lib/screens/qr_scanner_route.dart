@@ -7,8 +7,12 @@ import '../theme.dart';
 class QrScanRoute extends StatefulWidget {
   const QrScanRoute({super.key});
 
-  static Future<String?> open(BuildContext context) => Navigator.of(context).push<String>(
-        MaterialPageRoute(builder: (_) => const QrScanRoute(), fullscreenDialog: true),
+  static Future<String?> open(BuildContext context) => Navigator.of(context)
+      .push<String>(
+        MaterialPageRoute(
+          builder: (_) => const QrScanRoute(),
+          fullscreenDialog: true,
+        ),
       );
 
   @override
@@ -65,9 +69,14 @@ class _QrScanRouteState extends State<QrScanRoute> {
                   child: Padding(
                     padding: const EdgeInsets.all(8),
                     child: IconButton(
-                      style: IconButton.styleFrom(backgroundColor: Colors.black.withValues(alpha: 0.45)),
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.black.withValues(alpha: 0.45),
+                      ),
                       onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(Icons.close_rounded, color: Colors.white),
+                      icon: const Icon(
+                        Icons.close_rounded,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -79,12 +88,26 @@ class _QrScanRouteState extends State<QrScanRoute> {
                     decoration: BoxDecoration(
                       border: Border.all(color: AppColors.gold, width: 2.5),
                       borderRadius: BorderRadius.circular(26),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.35),
+                          blurRadius: 18,
+                          spreadRadius: 1,
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 const SizedBox(height: 26),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0x99000000),
+                    borderRadius: BorderRadius.circular(18),
+                  ),
                   child: Text(
                     'Pindai QR sesi dari panel admin',
                     textAlign: TextAlign.center,

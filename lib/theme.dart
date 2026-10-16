@@ -38,24 +38,35 @@ abstract class AppColors {
 const kManrope = 'Manrope';
 const kInter = 'Inter';
 
-TextStyle manrope(double size, FontWeight weight, {double? height, Color? color, double? spacing}) =>
-    TextStyle(
-      fontFamily: kManrope,
-      fontSize: size,
-      fontWeight: weight,
-      height: height,
-      color: color,
-      letterSpacing: spacing,
-    );
+TextStyle manrope(
+  double size,
+  FontWeight weight, {
+  double? height,
+  Color? color,
+  double? spacing,
+}) => TextStyle(
+  fontFamily: kManrope,
+  fontSize: size,
+  fontWeight: weight,
+  height: height,
+  color: color,
+  letterSpacing: spacing,
+);
 
-TextStyle inter(double size, FontWeight weight, {double? height, Color? color, double? spacing}) => TextStyle(
-      fontFamily: kInter,
-      fontSize: size,
-      fontWeight: weight,
-      height: height,
-      color: color,
-      letterSpacing: spacing,
-    );
+TextStyle inter(
+  double size,
+  FontWeight weight, {
+  double? height,
+  Color? color,
+  double? spacing,
+}) => TextStyle(
+  fontFamily: kInter,
+  fontSize: size,
+  fontWeight: weight,
+  height: height,
+  color: color,
+  letterSpacing: spacing,
+);
 
 /// Angka lebar tetap supaya NISN, waktu, dan hitungan tidak goyang.
 const tabular = [FontFeature.tabularFigures()];
@@ -125,7 +136,7 @@ ThemeData buildAppTheme() {
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: Colors.white,
-      hintStyle: inter(14.5, FontWeight.w400, color: AppColors.muted.withValues(alpha: 0.7)),
+      hintStyle: inter(14.5, FontWeight.w400, color: AppColors.muted),
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
@@ -140,7 +151,10 @@ ThemeData buildAppTheme() {
         borderSide: const BorderSide(color: AppColors.primary, width: 1.6),
       ),
     ),
-    dividerTheme: const DividerThemeData(color: AppColors.outline, thickness: 1),
+    dividerTheme: const DividerThemeData(
+      color: AppColors.outline,
+      thickness: 1,
+    ),
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
       backgroundColor: AppColors.ink,

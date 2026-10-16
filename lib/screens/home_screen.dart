@@ -37,7 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
     await _reload();
     if (!mounted) return;
     if (_sessions.isEmpty) {
-      await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const SetupScreen()));
+      await Navigator.of(context)
+          .push(MaterialPageRoute<void>(builder: (_) => const SetupScreen()));
       if (!mounted) return;
       await _reload();
       return;
@@ -70,7 +71,11 @@ class _HomeScreenState extends State<HomeScreen> {
       return s;
     }
     if (forScan && sessions.length == 1) return sessions.first;
-    final pick = await showSessionPicker(context, sessions: sessions, activeId: Store.activeId());
+    final pick = await showSessionPicker(
+      context,
+      sessions: sessions,
+      activeId: Store.activeId(),
+    );
     if (!mounted || pick == null) return null;
     if (pick.addNew) {
       final s = await addSessionByQr(context);
@@ -89,7 +94,9 @@ class _HomeScreenState extends State<HomeScreen> {
     await Store.upsertSession(target);
     await _reload();
     if (!mounted) return;
-    await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ScanScreen(session: target)));
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (_) => ScanScreen(session: target)),
+    );
     if (mounted) await _reload();
   }
 
@@ -140,7 +147,9 @@ class _Beranda extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gate = Store.gateToday();
-    final name = (gate?.name.isNotEmpty ?? false) ? gate!.name : Store.prefillName();
+    final name = (gate?.name.isNotEmpty ?? false)
+        ? gate!.name
+        : Store.prefillName();
     final point = gatePointOf(gate?.point ?? Store.prefillPoint());
 
     return SafeArea(
@@ -156,9 +165,19 @@ class _Beranda extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Assalamualaikum,', style: inter(13.5, FontWeight.w400, color: AppColors.muted)),
+                      Text(
+                        'Assalamualaikum,',
+                        style: inter(
+                          13.5,
+                          FontWeight.w400,
+                          color: AppColors.muted,
+                        ),
+                      ),
                       const SizedBox(height: 2),
-                      Text(name.isEmpty ? 'Petugas OSIS' : name, style: manrope(26, FontWeight.w800)),
+                      Text(
+                        name.isEmpty ? 'Petugas OSIS' : name,
+                        style: manrope(26, FontWeight.w800),
+                      ),
                     ],
                   ),
                 ),
@@ -171,7 +190,11 @@ class _Beranda extends StatelessWidget {
                     ),
                   ),
                   onPressed: () async {
-                    await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const SettingsScreen()));
+                    await Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const SettingsScreen(),
+                      ),
+                    );
                     await onChanged();
                   },
                   icon: const Icon(Icons.settings_outlined, size: 22),
@@ -185,17 +208,39 @@ class _Beranda extends StatelessWidget {
                 await showGateSheet(context);
                 await onChanged();
               },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.badge_outlined, size: 15, color: AppColors.goldInk),
-                    const SizedBox(width: 6),
-                    Text('${point.value} · ${point.label}', style: inter(13, FontWeight.w600, color: AppColors.goldInk)),
-                    const SizedBox(width: 4),
-                    const Icon(Icons.edit_rounded, size: 13, color: AppColors.goldInk),
-                  ],
+              child: SizedBox(
+                height: 44,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    widthFactor: 1,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.badge_outlined,
+                          size: 15,
+                          color: AppColors.goldInk,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          '${point.value} · ${point.label}',
+                          style: inter(
+                            13,
+                            FontWeight.w600,
+                            color: AppColors.goldInk,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        const Icon(
+                          Icons.edit_rounded,
+                          size: 13,
+                          color: AppColors.goldInk,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -203,6 +248,7 @@ class _Beranda extends StatelessWidget {
             Wrap(
               spacing: 8,
               runSpacing: 8,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 ValueListenableBuilder<bool>(
                   valueListenable: Signals.online,
@@ -216,14 +262,22 @@ class _Beranda extends StatelessWidget {
                           width: 8,
                           height: 8,
                           decoration: BoxDecoration(
-                            color: online ? AppColors.hadirLine : AppColors.errLine,
+                            color: online
+                                ? AppColors.hadirLine
+                                : AppColors.errLine,
                             shape: BoxShape.circle,
                           ),
                         ),
                         const SizedBox(width: 7),
                         Text(
                           online ? 'Terhubung' : 'Terputus',
-                          style: inter(12, FontWeight.w600, color: online ? AppColors.hadirInk : AppColors.errInk),
+                          style: inter(
+                            12,
+                            FontWeight.w600,
+                            color: online
+                                ? AppColors.hadirInk
+                                : AppColors.errInk,
+                          ),
                         ),
                       ],
                     ),
@@ -232,18 +286,36 @@ class _Beranda extends StatelessWidget {
                 InkWell(
                   borderRadius: BorderRadius.circular(999),
                   onTap: () => onPickSession(),
-                  child: _pill(
-                    bg: Colors.white,
-                    line: AppColors.outlineStrong,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.qr_code_2_rounded, size: 15, color: AppColors.primary),
-                        const SizedBox(width: 6),
-                        Text('Sesi: ${active?.name ?? 'belum dipilih'}', style: inter(12, FontWeight.w600)),
-                        const SizedBox(width: 4),
-                        const Icon(Icons.expand_more_rounded, size: 15, color: AppColors.muted),
-                      ],
+                  child: SizedBox(
+                    height: 44,
+                    child: Align(
+                      alignment: Alignment.center,
+                      widthFactor: 1,
+                      child: _pill(
+                        bg: Colors.white,
+                        line: AppColors.outlineStrong,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.qr_code_2_rounded,
+                              size: 15,
+                              color: AppColors.primary,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              'Sesi: ${active?.name ?? 'belum dipilih'}',
+                              style: inter(12, FontWeight.w600),
+                            ),
+                            const SizedBox(width: 4),
+                            const Icon(
+                              Icons.expand_more_rounded,
+                              size: 15,
+                              color: AppColors.muted,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -257,9 +329,20 @@ class _Beranda extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(Icons.cloud_upload_outlined, size: 15, color: AppColors.offInk),
+                          const Icon(
+                            Icons.cloud_upload_outlined,
+                            size: 15,
+                            color: AppColors.offInk,
+                          ),
                           const SizedBox(width: 6),
-                          Text('Antrean: $pending', style: inter(12, FontWeight.w600, color: AppColors.offInk)),
+                          Text(
+                            'Antrean: $pending',
+                            style: inter(
+                              12,
+                              FontWeight.w600,
+                              color: AppColors.offInk,
+                            ),
+                          ),
                         ],
                       ),
                     );
@@ -282,10 +365,21 @@ class _Beranda extends StatelessWidget {
                   Container(
                     width: 34,
                     height: 4,
-                    decoration: BoxDecoration(color: AppColors.gold, borderRadius: BorderRadius.circular(2)),
+                    decoration: BoxDecoration(
+                      color: AppColors.gold,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
                   const SizedBox(height: 12),
-                  Text('Hari ini, dari HP ini', style: inter(12.5, FontWeight.w600, color: AppColors.muted, spacing: 0.2)),
+                  Text(
+                    'Hari ini, dari HP ini',
+                    style: inter(
+                      12.5,
+                      FontWeight.w600,
+                      color: AppColors.muted,
+                      spacing: 0.2,
+                    ),
+                  ),
                   const SizedBox(height: 6),
                   ValueListenableBuilder<int>(
                     valueListenable: Signals.todayHadir,
@@ -293,9 +387,22 @@ class _Beranda extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
-                        Text('$hadir', style: manrope(44, FontWeight.w800).copyWith(fontFeatures: tabular)),
+                        Text(
+                          '$hadir',
+                          style: manrope(
+                            44,
+                            FontWeight.w800,
+                          ).copyWith(fontFeatures: tabular),
+                        ),
                         const SizedBox(width: 8),
-                        Text('siswa hadir', style: inter(13.5, FontWeight.w500, color: AppColors.muted)),
+                        Text(
+                          'siswa hadir',
+                          style: inter(
+                            13.5,
+                            FontWeight.w500,
+                            color: AppColors.muted,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -304,7 +411,11 @@ class _Beranda extends StatelessWidget {
                     valueListenable: Signals.todayTotal,
                     builder: (context, total, child) => Text(
                       '$total pindaian tercatat hari ini',
-                      style: inter(12.5, FontWeight.w400, color: AppColors.muted),
+                      style: inter(
+                        12.5,
+                        FontWeight.w400,
+                        color: AppColors.muted,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 14),
@@ -313,7 +424,9 @@ class _Beranda extends StatelessWidget {
                   ValueListenableBuilder<int>(
                     valueListenable: Signals.todayHadir,
                     builder: (context, hadir, child) => Text(
-                      hadir > 0 ? 'Terima kasih sudah menjaga gerbang hari ini.' : 'Belum ada yang dipindai hari ini.',
+                      hadir > 0
+                          ? 'Terima kasih sudah menjaga gerbang hari ini.'
+                          : 'Belum ada yang dipindai hari ini.',
                       style: inter(13, FontWeight.w400, color: AppColors.muted),
                     ),
                   ),
@@ -326,15 +439,19 @@ class _Beranda extends StatelessWidget {
     );
   }
 
-  Widget _pill({required Color bg, required Color line, required Widget child}) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
-        decoration: BoxDecoration(
-          color: bg,
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: line),
-        ),
-        child: child,
-      );
+  Widget _pill({
+    required Color bg,
+    required Color line,
+    required Widget child,
+  }) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
+    decoration: BoxDecoration(
+      color: bg,
+      borderRadius: BorderRadius.circular(999),
+      border: Border.all(color: line),
+    ),
+    child: child,
+  );
 }
 
 class _BottomBar extends StatelessWidget {
@@ -342,7 +459,11 @@ class _BottomBar extends StatelessWidget {
   final ValueChanged<int> onTab;
   final VoidCallback onScan;
 
-  const _BottomBar({required this.tab, required this.onTab, required this.onScan});
+  const _BottomBar({
+    required this.tab,
+    required this.onTab,
+    required this.onScan,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -350,7 +471,13 @@ class _BottomBar extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Colors.white,
         border: Border(top: BorderSide(color: AppColors.outline)),
-        boxShadow: [BoxShadow(color: Color(0x14000000), blurRadius: 12, offset: Offset(0, -4))],
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x14000000),
+            blurRadius: 12,
+            offset: Offset(0, -4),
+          ),
+        ],
       ),
       child: SafeArea(
         top: false,
@@ -370,7 +497,9 @@ class _BottomBar extends StatelessWidget {
                 offset: const Offset(0, -16),
                 child: Material(
                   color: AppColors.primary,
-                  shape: const CircleBorder(side: BorderSide(color: AppColors.gold, width: 2.5)),
+                  shape: const CircleBorder(
+                    side: BorderSide(color: AppColors.gold, width: 2.5),
+                  ),
                   elevation: 6,
                   shadowColor: Colors.black45,
                   child: InkWell(
@@ -379,7 +508,11 @@ class _BottomBar extends StatelessWidget {
                     child: const SizedBox(
                       width: 58,
                       height: 58,
-                      child: Icon(Icons.qr_code_scanner_rounded, color: Colors.white, size: 28),
+                      child: Icon(
+                        Icons.qr_code_scanner_rounded,
+                        color: Colors.white,
+                        size: 28,
+                      ),
                     ),
                   ),
                 ),
@@ -399,17 +532,25 @@ class _BottomBar extends StatelessWidget {
     );
   }
 
-  Widget _item({required IconData icon, required String label, required bool selected, required VoidCallback onTap}) {
+  Widget _item({
+    required IconData icon,
+    required String label,
+    required bool selected,
+    required VoidCallback onTap,
+  }) {
     final color = selected ? AppColors.primary : AppColors.muted;
     return InkWell(
       onTap: onTap,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: color, size: 24),
-          const SizedBox(height: 2),
-          Text(label, style: inter(11.5, FontWeight.w600, color: color)),
-        ],
+      child: SizedBox(
+        height: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 24),
+            const SizedBox(height: 2),
+            Text(label, style: inter(11.5, FontWeight.w600, color: color)),
+          ],
+        ),
       ),
     );
   }
