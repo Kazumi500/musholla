@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   cetak:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Ambil kode
@@ -42,8 +42,36 @@ jobs:
       - name: Jalankan tes
         run: flutter test
 
+      - name: Siapkan kunci tanda tangan rilis
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::warning::Rahasia kunci rilis belum diisi; APK akan bertanda tangan debug dan bisa bentrok saat dipasang di HP."
+            exit 0
+          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > android/absensi-release.p12
+          {
+            echo "storeFile=absensi-release.p12"
+            echo "storePassword=$KEYSTORE_PASSWORD"
+            echo "keyAlias=$KEY_ALIAS"
+            echo "keyPassword=$KEY_PASSWORD"
+          } > android/key.properties
+
       - name: Cetak APK
-        run: flutter build apk --release
+        run: flutter build apk --release --build-number=${{ github.run_number }}
+
+      - name: Periksa tanda tangan APK
+        run: |
+          APKSIGNER=$(ls "$ANDROID_HOME"/build-tools/*/apksigner 2>/dev/null | sort -V | tail -1)
+          if [ -n "$APKSIGNER" ]; then
+            "$APKSIGNER" verify --print-certs build/app/outputs/flutter-apk/app-release.apk
+          else
+            echo "::warning::apksigner tidak ditemukan; tanda tangan tidak diperiksa."
+          fi
 
       - name: Simpan APK sebagai hasil cetakan
         uses: actions/upload-artifact@v7
