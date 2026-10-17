@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
@@ -17,19 +18,11 @@ import '../widgets/sheets.dart';
 
 class _CardData {
   final String result;
-  final String message;
   final String? name;
   final String? grade;
   final String nisn;
   final DateTime at;
-  const _CardData(
-    this.result,
-    this.message,
-    this.name,
-    this.grade,
-    this.nisn,
-    this.at,
-  );
+  const _CardData(this.result, this.name, this.grade, this.nisn, this.at);
 }
 
 /// Layar pemindai: kamera penuh, kartu hasil di atasnya, dan kendali lengkap.
@@ -127,16 +120,7 @@ class _ScanScreenState extends State<ScanScreen> {
         if (!_recently('raw:$upper', now)) {
           _recent['raw:$upper'] = now;
           final shown = upper.length > 20 ? upper.substring(0, 20) : upper;
-          _show(
-            _CardData(
-              'invalid',
-              'Bukan format NISN: $shown',
-              null,
-              null,
-              shown,
-              DateTime.now(),
-            ),
-          );
+          _show(_CardData('invalid', null, null, shown, DateTime.now()));
           await ScanFeedback.play('invalid');
         }
         return;
@@ -178,20 +162,11 @@ class _ScanScreenState extends State<ScanScreen> {
         );
         Signals.online.value = true;
         await Store.upsertSession(widget.session);
-        _show(_CardData(result, message, name, grade, upper, at));
+        _show(_CardData(result, name, grade, upper, at));
         await ScanFeedback.play(result);
       } else if (res.kind == 'notfound') {
         Signals.online.value = true;
-        _show(
-          _CardData(
-            'token_error',
-            'Sesi tidak aktif di server. Minta QR baru dari admin.',
-            null,
-            null,
-            upper,
-            at,
-          ),
-        );
+        _show(_CardData('token_error', null, null, upper, at));
         await ScanFeedback.play('token_error');
       } else {
         // network / csrf / jawaban aneh: simpan ke antrean, jangan pernah buang pindaian
@@ -208,16 +183,7 @@ class _ScanScreenState extends State<ScanScreen> {
           ),
         );
         Signals.online.value = res.kind != 'network';
-        _show(
-          _CardData(
-            'offline',
-            'Masuk antrean, terkirim otomatis.',
-            null,
-            null,
-            upper,
-            at,
-          ),
-        );
+        _show(_CardData('offline', null, null, upper, at));
         await ScanFeedback.play('offline');
       }
     } finally {
@@ -248,192 +214,222 @@ class _ScanScreenState extends State<ScanScreen> {
     try {
       await _controller.toggleTorch();
       if (mounted) setState(() => _torch = !_torch);
-    } catch (_) {}
+    } catch (_) {
+      if (mounted) _toast('Lampu tidak tersedia di kamera ini.');
+    }
   }
 
   Future<void> _flipCamera() async {
     try {
       await _controller.switchCamera();
-    } catch (_) {}
+    } catch (_) {
+      if (mounted) _toast('Perangkat ini hanya punya satu kamera.');
+    }
+  }
+
+  /// Pesan singkat di atas kamera; latar terang supaya terbaca di layar gelap.
+  void _toast(String text) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 2),
+          backgroundColor: AppColors.card,
+          content: Text(
+            text,
+            style: inter(14, FontWeight.w500, color: AppColors.ink),
+          ),
+        ),
+      );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          MobileScanner(
-            controller: _controller,
-            onDetect: _onDetect,
-            errorBuilder: (context, error) => _cameraError(error),
-          ),
-          SafeArea(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-                  child: Row(
-                    children: [
-                      _round(
-                        icon: Icons.close_rounded,
-                        onTap: () => Navigator.of(context).pop(),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Container(
-                          height: 44,
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.symmetric(horizontal: 14),
-                          decoration: BoxDecoration(
-                            color: _scrim,
-                            borderRadius: BorderRadius.circular(999),
-                          ),
-                          child: Text(
-                            'Sesi: ${widget.session.name}',
-                            style: inter(
-                              14,
-                              FontWeight.w600,
-                              color: Colors.white,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: AppSystemUi.light,
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            MobileScanner(
+              controller: _controller,
+              onDetect: _onDetect,
+              errorBuilder: (context, error) => _cameraError(error),
+            ),
+            SafeArea(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+                    child: Row(
+                      children: [
+                        _round(
+                          icon: Icons.close_rounded,
+                          onTap: () => Navigator.of(context).pop(),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Container(
+                            height: 44,
+                            alignment: Alignment.centerLeft,
+                            padding: const EdgeInsets.symmetric(horizontal: 14),
+                            decoration: BoxDecoration(
+                              color: _scrim,
+                              borderRadius: BorderRadius.circular(999),
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                            child: Text(
+                              'Sesi: ${widget.session.name}',
+                              style: inter(
+                                14,
+                                FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ),
-                      ),
-                      _round(
-                        icon: _torch
-                            ? Icons.flashlight_on_rounded
-                            : Icons.flashlight_off_rounded,
-                        active: _torch,
-                        onTap: _toggleTorch,
-                      ),
-                      const SizedBox(width: 8),
-                      _round(
-                        icon: Icons.cameraswitch_rounded,
-                        onTap: _flipCamera,
-                      ),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-                Container(
-                  width: 250,
-                  height: 250,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.gold, width: 2.5),
-                    borderRadius: BorderRadius.circular(24),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.35),
-                        blurRadius: 18,
-                        spreadRadius: 1,
-                      ),
-                      BoxShadow(
-                        color: AppColors.gold.withValues(alpha: 0.25),
-                        blurRadius: 24,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 18),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 18,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: _scrim,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Arahkan kamera ke kartu siswa.',
-                        textAlign: TextAlign.center,
-                        style: inter(16, FontWeight.w600, color: Colors.white),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Tidak perlu terlalu dekat.',
-                        textAlign: TextAlign.center,
-                        style: inter(14, FontWeight.w400, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 220),
-                  switchInCurve: Curves.easeOutCubic,
-                  transitionBuilder: (child, animation) => FadeTransition(
-                    opacity: animation,
-                    child: SlideTransition(
-                      position: Tween<Offset>(
-                        begin: const Offset(0, 0.12),
-                        end: Offset.zero,
-                      ).animate(animation),
-                      child: child,
+                        _round(
+                          icon: _torch
+                              ? Icons.flashlight_on_rounded
+                              : Icons.flashlight_off_rounded,
+                          active: _torch,
+                          onTap: _toggleTorch,
+                        ),
+                        const SizedBox(width: 8),
+                        _round(
+                          icon: Icons.cameraswitch_rounded,
+                          onTap: _flipCamera,
+                        ),
+                      ],
                     ),
                   ),
-                  child: _card == null
-                      ? const SizedBox.shrink(key: ValueKey('kosong'))
-                      : Padding(
-                          key: ValueKey(
-                            'kartu-${_card!.at.microsecondsSinceEpoch}',
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 4,
-                          ),
-                          child: ResultCard(
-                            result: _card!.result,
-                            message: _card!.message,
-                            studentName: _card!.name,
-                            studentGrade: _card!.grade,
-                            nisn: _card!.nisn,
-                            at: _card!.at,
+                  const Spacer(),
+                  Container(
+                    width: 250,
+                    height: 250,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: AppColors.gold, width: 2.5),
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.35),
+                          blurRadius: 18,
+                          spreadRadius: 1,
+                        ),
+                        BoxShadow(
+                          color: AppColors.gold.withValues(alpha: 0.25),
+                          blurRadius: 24,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 18,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _scrim,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Arahkan kamera ke kartu siswa.',
+                          textAlign: TextAlign.center,
+                          style: inter(
+                            16,
+                            FontWeight.w600,
+                            color: Colors.white,
                           ),
                         ),
-                ),
-                const SizedBox(height: 12),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(14, 0, 14, 10),
-                  child: Row(
-                    children: [
-                      _round(
-                        icon: _sound
-                            ? Icons.volume_up_rounded
-                            : Icons.volume_off_rounded,
-                        active: _sound,
-                        onTap: () async {
-                          setState(() => _sound = !_sound);
-                          await Store.setSoundOn(_sound);
-                        },
-                      ),
-                      const SizedBox(width: 8),
-                      _round(
-                        icon: Icons.vibration_rounded,
-                        active: _vibe,
-                        onTap: () async {
-                          setState(() => _vibe = !_vibe);
-                          await Store.setVibeOn(_vibe);
-                        },
-                      ),
-                      const SizedBox(width: 8),
-                      _manualChip(),
-                      const Spacer(),
-                      _statusPill(),
-                    ],
+                        const SizedBox(height: 4),
+                        Text(
+                          'Tidak perlu terlalu dekat.',
+                          textAlign: TextAlign.center,
+                          style: inter(
+                            14,
+                            FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  const Spacer(),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 220),
+                    switchInCurve: Curves.easeOutCubic,
+                    transitionBuilder: (child, animation) => FadeTransition(
+                      opacity: animation,
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(0, 0.12),
+                          end: Offset.zero,
+                        ).animate(animation),
+                        child: child,
+                      ),
+                    ),
+                    child: _card == null
+                        ? const SizedBox.shrink(key: ValueKey('kosong'))
+                        : Padding(
+                            key: ValueKey(
+                              'kartu-${_card!.at.microsecondsSinceEpoch}',
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 4,
+                            ),
+                            child: ResultCard(
+                              result: _card!.result,
+                              studentName: _card!.name,
+                              studentGrade: _card!.grade,
+                              nisn: _card!.nisn,
+                              at: _card!.at,
+                            ),
+                          ),
+                  ),
+                  const SizedBox(height: 12),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(14, 0, 14, 10),
+                    child: Row(
+                      children: [
+                        _round(
+                          icon: _sound
+                              ? Icons.volume_up_rounded
+                              : Icons.volume_off_rounded,
+                          active: _sound,
+                          onTap: () async {
+                            setState(() => _sound = !_sound);
+                            await Store.setSoundOn(_sound);
+                          },
+                        ),
+                        const SizedBox(width: 8),
+                        _round(
+                          icon: Icons.vibration_rounded,
+                          active: _vibe,
+                          onTap: () async {
+                            setState(() => _vibe = !_vibe);
+                            await Store.setVibeOn(_vibe);
+                          },
+                        ),
+                        const SizedBox(width: 8),
+                        _manualChip(),
+                        const Spacer(),
+                        _statusPill(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

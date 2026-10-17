@@ -278,7 +278,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ),
                         title: Text(
-                          'Tambah sesi (scan QR)',
+                          'Tambah sesi baru',
                           style: inter(16, FontWeight.w600),
                         ),
                         subtitle: Text(
@@ -353,7 +353,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ),
                         value: Store.soundOn(),
-                        activeThumbColor: AppColors.secondary,
                         onChanged: (v) async {
                           await Store.setSoundOn(v);
                           setState(() {});
@@ -378,7 +377,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ),
                         value: Store.vibeOn(),
-                        activeThumbColor: AppColors.secondary,
                         onChanged: (v) async {
                           await Store.setVibeOn(v);
                           setState(() {});
@@ -395,7 +393,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Text('Absensi Sholat', style: inter(16, FontWeight.w600)),
                       const SizedBox(height: 3),
                       Text(
-                        'Versi 1.0.0 untuk petugas OSIS. Klien pemindai; server sekolah tidak diubah.',
+                        'Versi 1.0.0 untuk petugas OSIS. Server sekolah tidak diubah.',
                         style: inter(
                           14,
                           FontWeight.w400,
@@ -423,12 +421,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          title.toUpperCase(),
+          title,
           style: inter(
             12,
             FontWeight.w600,
             color: AppColors.muted,
-            spacing: 0.6,
+            spacing: 0.2,
           ),
         ),
         const SizedBox(height: 10),

@@ -64,6 +64,8 @@ Rasa hangat diwujudkan lewat kata. Contoh nada berikut patokan rasa, bukan kalim
 
 Larangan nada: kalimat menghakimi ("SALAH"), huruf kapital semua untuk kesalahan, dan istilah teknis mentah di layar petugas.
 
+Kosakata: selalu "pindai/pindaian" di teks tampilan; "scan" hanya untuk istilah teknis di kode.
+
 ## Dial dan Gerak
 
 **ENERGY 2 / RHYTHM 1 / MOTION 2.**

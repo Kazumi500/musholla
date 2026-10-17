@@ -187,7 +187,7 @@ class _Beranda extends StatelessWidget {
     final point = gatePointOf(gate?.point ?? Store.prefillPoint());
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value: AppSystemUi.light,
       child: Column(
         children: [
           _head(context, name: name, point: point),
@@ -411,23 +411,29 @@ class _Beranda extends StatelessWidget {
           valueListenable: Signals.pending,
           builder: (context, pending, child) {
             if (pending == 0) return const SizedBox.shrink();
-            return _pill(
-              bg: AppColors.offBg,
-              line: AppColors.offLine,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.cloud_upload_outlined,
-                    size: 15,
-                    color: AppColors.offInk,
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    'Antrean: $pending',
-                    style: inter(12, FontWeight.w600, color: AppColors.offInk),
-                  ),
-                ],
+            return _QueuePulse(
+              child: _pill(
+                bg: AppColors.offBg,
+                line: AppColors.offLine,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.cloud_upload_outlined,
+                      size: 15,
+                      color: AppColors.offInk,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Antrean: $pending',
+                      style: inter(
+                        12,
+                        FontWeight.w600,
+                        color: AppColors.offInk,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },
@@ -690,5 +696,50 @@ class _BottomBar extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+/// Denyut halus pil antrean (kontrak gerak DESIGN): hanya opasitas, ukuran
+/// tidak berubah supaya tata letak tetap tenang. Mati saat animasi sistem
+/// dimatikan.
+class _QueuePulse extends StatefulWidget {
+  final Widget child;
+  const _QueuePulse({required this.child});
+
+  @override
+  State<_QueuePulse> createState() => _QueuePulseState();
+}
+
+class _QueuePulseState extends State<_QueuePulse>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _control = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1600),
+  );
+  late final Animation<double> _fade = Tween<double>(
+    begin: 1,
+    end: 0.7,
+  ).animate(CurvedAnimation(parent: _control, curve: Curves.easeInOut));
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (MediaQuery.of(context).disableAnimations) {
+      _control.stop();
+      _control.value = 0;
+    } else if (!_control.isAnimating) {
+      _control.repeat(reverse: true);
+    }
+  }
+
+  @override
+  void dispose() {
+    _control.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(opacity: _fade, child: widget.child);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// Palet dari DESIGN.md: hijau tua berwibawa + aksen emas, latar kertas hangat.
 abstract class AppColors {
@@ -74,6 +75,21 @@ TextStyle inter(
 
 /// Angka lebar tetap supaya NISN, waktu, dan hitungan tidak goyang.
 const tabular = [FontFeature.tabularFigures()];
+
+/// Gaya bilah sistem per latar: terang di atas kepala hijau dan kamera,
+/// gelap di atas latar kertas. Dipasang lewat AnnotatedRegion tiap layar.
+abstract class AppSystemUi {
+  static const light = SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.light,
+    statusBarBrightness: Brightness.dark,
+  );
+  static const dark = SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.dark,
+    statusBarBrightness: Brightness.light,
+  );
+}
 
 ThemeData buildAppTheme() {
   final base = ThemeData(
@@ -155,6 +171,20 @@ ThemeData buildAppTheme() {
       style: TextButton.styleFrom(
         foregroundColor: AppColors.primary,
         textStyle: inter(16, FontWeight.w600),
+      ),
+    ),
+    // Jempol putih di rel primary (9,9:1) dan jempol muted di rel outline
+    // (5,4:1); bawaan M3 memakai jempol outline yang tenggelam (1,3:1).
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith(
+        (states) => states.contains(WidgetState.selected)
+            ? Colors.white
+            : AppColors.muted,
+      ),
+      trackColor: WidgetStateProperty.resolveWith(
+        (states) => states.contains(WidgetState.selected)
+            ? AppColors.primary
+            : AppColors.outline,
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(

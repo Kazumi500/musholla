@@ -110,16 +110,25 @@ Future<GateState?> showGateSheet(
                 const SizedBox(height: 14),
                 Text('Titik gerbang', style: inter(14, FontWeight.w600)),
                 const SizedBox(height: 6),
-                DropdownButtonFormField<String>(
-                  initialValue: point,
-                  items: [
-                    for (final p in gatePoints)
-                      DropdownMenuItem(
-                        value: p.value,
-                        child: Text('${p.value} · ${p.label}'),
+                Row(
+                  children: [
+                    for (var i = 0; i < gatePoints.length; i++) ...[
+                      Expanded(
+                        child: _PointChoice(
+                          label: gatePoints[i].value,
+                          selected: point == gatePoints[i].value,
+                          onTap: () =>
+                              setSheet(() => point = gatePoints[i].value),
+                        ),
                       ),
+                      if (i < gatePoints.length - 1) const SizedBox(width: 8),
+                    ],
                   ],
-                  onChanged: (v) => setSheet(() => point = v ?? point),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  gatePointOf(point).label,
+                  style: inter(14, FontWeight.w400, color: AppColors.muted),
                 ),
                 const SizedBox(height: 20),
                 FilledButton(
@@ -187,7 +196,7 @@ Future<SessionPick?> showSessionPicker(
             Text('Pilih sesi', style: manrope(20, FontWeight.w700)),
             const SizedBox(height: 3),
             Text(
-              'Scan ini masuk ke sesi yang dipilih.',
+              'Pindaian ini masuk ke sesi yang dipilih.',
               style: inter(14, FontWeight.w400, color: AppColors.muted),
             ),
             const SizedBox(height: 8),
@@ -236,7 +245,7 @@ Future<SessionPick?> showSessionPicker(
                 style: inter(16, FontWeight.w600),
               ),
               subtitle: Text(
-                'Scan QR sesi dari panel admin',
+                'Pindai QR sesi dari panel admin',
                 style: inter(14, FontWeight.w400, color: AppColors.muted),
               ),
               onTap: () => Navigator.of(ctx).pop(const SessionPick.add()),
@@ -312,4 +321,47 @@ Future<String?> showManualNisnSheet(BuildContext context) async {
 
   ctrl.dispose();
   return result;
+}
+
+/// Tombol pilihan titik gerbang: sekali ketuk, tinggi 48, sudut 12.
+class _PointChoice extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+  const _PointChoice({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    const radius = BorderRadius.all(Radius.circular(12));
+    return Material(
+      color: selected ? AppColors.primary : Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: radius,
+        side: BorderSide(
+          color: selected ? AppColors.primary : AppColors.outlineStrong,
+        ),
+      ),
+      child: InkWell(
+        customBorder: const RoundedRectangleBorder(borderRadius: radius),
+        onTap: onTap,
+        child: SizedBox(
+          height: 48,
+          child: Center(
+            child: Text(
+              label,
+              style: inter(
+                14,
+                FontWeight.w600,
+                color: selected ? Colors.white : AppColors.ink,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

@@ -94,6 +94,30 @@ class AppDb {
     await refreshSignals();
   }
 
+  /// Baris "gagal" masuk antrean lagi seolah pindaian baru; pengirim otomatis
+  /// yang menentukan hasil akhirnya.
+  static Future<void> requeue(int id) async {
+    final db = await _database;
+    await db.update(
+      'scans',
+      {'result': 'offline', 'message': '', 'pending': 1},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    await refreshSignals();
+  }
+
+  static Future<ScanRow?> byId(int id) async {
+    final db = await _database;
+    final rows = await db.query(
+      'scans',
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
+    return rows.isEmpty ? null : ScanRow.fromMap(rows.first);
+  }
+
   static Future<List<ScanRow>> today() async {
     final db = await _database;
     final rows = await db.query(

@@ -4,24 +4,32 @@ import '../models.dart';
 import '../theme.dart';
 import 'result_card.dart';
 
-/// Satu baris pindaian: waktu, nama atau pesan, dan chip status.
+/// Satu baris pindaian: waktu, nama atau status dari tabel aplikasi, dan chip
+/// status. Baris "gagal" menampilkan tombol "Kirim ulang" bila `onRetry` ada.
 /// Dipakai tab Riwayat dan blok "Pindaian terakhir" di Beranda.
 class ScanTile extends StatelessWidget {
   final ScanRow row;
   final String? sessionName;
-  const ScanTile({super.key, required this.row, this.sessionName});
+  final VoidCallback? onRetry;
+  const ScanTile({
+    super.key,
+    required this.row,
+    this.sessionName,
+    this.onRetry,
+  });
 
   @override
   Widget build(BuildContext context) {
     final st = styleFor(row.result);
     final at = DateTime.fromMillisecondsSinceEpoch(row.at);
-    final title = (row.studentName != null && row.studentName!.isNotEmpty)
-        ? row.studentName!
-        : (row.message.isNotEmpty ? row.message : 'NISN ${row.nisn}');
+    final named = row.studentName != null && row.studentName!.isNotEmpty;
+    final title = named ? row.studentName! : st.title;
     final parts = <String>[
-      if (row.studentGrade != null && row.studentGrade!.isNotEmpty)
+      if (named && row.studentGrade != null && row.studentGrade!.isNotEmpty)
         row.studentGrade!,
+      if (!named) 'NISN ${row.nisn}',
       sessionName ?? '',
+      if (row.result == 'gagal' && row.message.isNotEmpty) row.message,
       if (row.pending) 'menunggu jaringan',
     ]..removeWhere((s) => s.isEmpty);
     final subtitle = parts.isEmpty ? 'NISN ${row.nisn}' : parts.join(' · ');
@@ -67,18 +75,33 @@ class ScanTile extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: st.bg,
-                borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: st.line),
+            if (onRetry != null && row.result == 'gagal')
+              TextButton(
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  minimumSize: const Size(0, 44),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  textStyle: inter(14, FontWeight.w600),
+                ),
+                onPressed: onRetry,
+                child: const Text('Kirim ulang'),
+              )
+            else
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: st.bg,
+                  borderRadius: BorderRadius.circular(999),
+                  border: Border.all(color: st.line),
+                ),
+                child: Text(
+                  st.short,
+                  style: inter(12, FontWeight.w600, color: st.ink),
+                ),
               ),
-              child: Text(
-                st.short,
-                style: inter(12, FontWeight.w600, color: st.ink),
-              ),
-            ),
           ],
         ),
       ),

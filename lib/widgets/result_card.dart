@@ -114,7 +114,6 @@ String clockText(DateTime d) =>
 
 class ResultCard extends StatelessWidget {
   final String result;
-  final String message;
   final String? studentName;
   final String? studentGrade;
   final String nisn;
@@ -123,7 +122,6 @@ class ResultCard extends StatelessWidget {
   const ResultCard({
     super.key,
     required this.result,
-    required this.message,
     this.studentName,
     this.studentGrade,
     required this.nisn,
@@ -133,10 +131,11 @@ class ResultCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final st = styleFor(result);
-    final middle = studentName != null && studentName!.isNotEmpty
-        ? studentName!
-        : (message.isNotEmpty ? message : st.detail);
-    final sub = studentName != null && studentName!.isNotEmpty
+    final named = studentName != null && studentName!.isNotEmpty;
+    // Teks besar hanya dari nama siswa atau tabel status aplikasi; pesan
+    // mentah server (sering kapital semua) tidak pernah jadi judul.
+    final middle = named ? studentName! : st.detail;
+    final sub = named
         ? '${studentGrade ?? '-'} · NISN $nisn'
         : (nisn.isNotEmpty ? 'NISN $nisn' : '');
 

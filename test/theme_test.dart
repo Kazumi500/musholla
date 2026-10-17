@@ -30,6 +30,14 @@ void main() {
     });
   });
 
+  test('sakelar: jempol kontras dengan rel di kedua keadaan', () {
+    final sw = buildAppTheme().switchTheme;
+    expect(sw.thumbColor!.resolve({WidgetState.selected}), Colors.white);
+    expect(sw.trackColor!.resolve({WidgetState.selected}), AppColors.primary);
+    expect(sw.thumbColor!.resolve({}), AppColors.muted);
+    expect(sw.trackColor!.resolve({}), AppColors.outline);
+  });
+
   testWidgets('teks tanpa warna tampil dengan warna ink', (tester) async {
     await tester.pumpWidget(
       MaterialApp(

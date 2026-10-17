@@ -11,6 +11,7 @@ import 'theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(AppSystemUi.dark);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Store.init();
   await ScanFeedback.init();
