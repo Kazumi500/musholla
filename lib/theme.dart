@@ -98,18 +98,36 @@ ThemeData buildAppTheme() {
   );
 
   final text = base.textTheme.copyWith(
-    displaySmall: manrope(40, FontWeight.w800, height: 1.12),
-    headlineMedium: manrope(26, FontWeight.w700, height: 1.16),
-    headlineSmall: manrope(20, FontWeight.w700, height: 1.2),
-    titleLarge: manrope(20, FontWeight.w700),
-    titleMedium: manrope(16, FontWeight.w700),
-    titleSmall: manrope(14, FontWeight.w600),
-    bodyLarge: inter(16, FontWeight.w400, height: 1.45),
-    bodyMedium: inter(14, FontWeight.w400, height: 1.45),
-    bodySmall: inter(12, FontWeight.w400, height: 1.4),
-    labelLarge: inter(16, FontWeight.w600),
-    labelMedium: inter(14, FontWeight.w600),
-    labelSmall: inter(12, FontWeight.w600, spacing: 0.2),
+    // Warna wajib eksplisit di setiap gaya. Tanpa warna, mesin render
+    // menggambar teks dengan putih bawaan, sehingga teks menghilang di latar
+    // terang. Dijaga oleh test/theme_test.dart.
+    displaySmall: manrope(
+      40,
+      FontWeight.w800,
+      color: AppColors.ink,
+      height: 1.12,
+    ),
+    headlineMedium: manrope(
+      26,
+      FontWeight.w700,
+      color: AppColors.ink,
+      height: 1.16,
+    ),
+    headlineSmall: manrope(
+      20,
+      FontWeight.w700,
+      color: AppColors.ink,
+      height: 1.2,
+    ),
+    titleLarge: manrope(20, FontWeight.w700, color: AppColors.ink),
+    titleMedium: manrope(16, FontWeight.w700, color: AppColors.ink),
+    titleSmall: manrope(14, FontWeight.w600, color: AppColors.ink),
+    bodyLarge: inter(16, FontWeight.w400, color: AppColors.ink, height: 1.45),
+    bodyMedium: inter(14, FontWeight.w400, color: AppColors.ink, height: 1.45),
+    bodySmall: inter(12, FontWeight.w400, color: AppColors.ink, height: 1.4),
+    labelLarge: inter(16, FontWeight.w600, color: AppColors.ink),
+    labelMedium: inter(14, FontWeight.w600, color: AppColors.ink),
+    labelSmall: inter(12, FontWeight.w600, color: AppColors.ink, spacing: 0.2),
   );
 
   return base.copyWith(
